@@ -8,7 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,31 +56,42 @@ public class MainActivity extends AppCompatActivity {
             responseView.setText(matrikelNummer);
         }
 
-        private void calculate(String matrikelNummer){
-            char[] chars = matrikelNummer.toCharArray();
-            StringBuilder evenDigits = new StringBuilder();
-            StringBuilder oddDigits = new StringBuilder();
+        
+        private void calculate(String matrikelnummer) {
+        List<String> result = new ArrayList<>();
 
-            for (char c: chars){
-                if(Character.isDigit(c)){
-                    int digit = Character.getNumericValue(c);
-                    if(digit % 2 == 0 ){
-                        evenDigits.append(digit);
-                    }else{
-                        oddDigits.append(digit);
-                    }
+        // Convert the Matrikelnummer string to an array of characters
+        char[] chars = matrikelnummer.toCharArray();
+        int n = chars.length;
+
+        // Iterate over all pairs of digits
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int digit1 = Character.getNumericValue(chars[i]);
+                int digit2 = Character.getNumericValue(chars[j]);
+
+                // Check if both digits are greater than 1 and have a common divisor
+                if (digit1 > 1 && digit2 > 1 && hasCommonDivisor(digit1, digit2)) {
+                    result.add("(" + i + ", " + j + ")");
                 }
             }
-            char[] sortedEvenDigits = evenDigits.toString().toCharArray();
-            char[] sortedOddDigits = oddDigits.toString().toCharArray();
-
-            Arrays.sort(sortedEvenDigits);
-            Arrays.sort(sortedOddDigits);
-
-            StringBuilder sortedMatNummr = new StringBuilder();
-
-            sortedMatNummr.append(sortedEvenDigits);
-            sortedMatNummr.append(sortedOddDigits);
-            responseView.setText(sortedMatNummr.toString());
         }
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Common Indices:\n");
+        for (String indexPair : result) {
+            stringBuilder.append(indexPair).append("\n");
+        }
+        responseView.setText(stringBuilder.toString());
+
+       
+    }
+
+        private boolean hasCommonDivisor(int a, int b) {
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a > 1;
+    }
     }
