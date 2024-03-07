@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText  matrikelNummer;
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String matNummer = matrikelNummer.getText().toString();
                 if (!matNummer.isEmpty()) {
-                    sendToServer(matNummer);
+                    calculate(matNummer);
                 }
             }
         });
@@ -54,7 +56,30 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private void calculate(String matrikelNummer){
-            
-            responseView.setText(matrikelNummer);
+            char[] chars = matrikelNummer.toCharArray();
+            StringBuilder evenDigits = new StringBuilder();
+            StringBuilder oddDigits = new StringBuilder();
+
+            for (char c: chars){
+                if(Character.isDigit(c)){
+                    int digit = Character.getNumericValue(c);
+                    if(digit % 2 == 0 ){
+                        evenDigits.append(digit);
+                    }else{
+                        oddDigits.append(digit);
+                    }
+                }
+            }
+            char[] sortedEvenDigits = evenDigits.toString().toCharArray();
+            char[] sortedOddDigits = oddDigits.toString().toCharArray();
+
+            Arrays.sort(sortedEvenDigits);
+            Arrays.sort(sortedOddDigits);
+
+            StringBuilder sortedMatNummr = new StringBuilder();
+
+            sortedMatNummr.append(sortedEvenDigits);
+            sortedMatNummr.append(sortedOddDigits);
+            responseView.setText(sortedMatNummr.toString());
         }
     }
