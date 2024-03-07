@@ -23,12 +23,24 @@ public class MainActivity extends AppCompatActivity {
 
         Button sendButton = findViewById(R.id.send);
 
+        Button calculateButton  = findViewById(R.id.button2);
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String matrikelnummer = matrikelNummer.getText().toString();
-                if (!matrikelnummer.isEmpty()) {
-                    sendToServer(matrikelnummer);
+                String matNummer = matrikelNummer.getText().toString();
+                if (!matNummer.isEmpty()) {
+                    sendToServer(matNummer);
+                }
+            }
+        });
+
+        calculateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String matNummer = matrikelNummer.getText().toString();
+                if (!matNummer.isEmpty()) {
+                    sendToServer(matNummer);
                 }
             }
         });
@@ -38,5 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
         private void sendToServer(String matrikelNummer){
             //TODO
+            responseView.setText(matrikelNummer);
+        }
+
+        private void calculate(String matrikelNummer){
+            
+            responseView.setText(matrikelNummer);
         }
     }
